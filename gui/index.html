@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+
+  <script type="text/javascript" src="http://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+  <script src="./node_modules/nipplejs/dist/nipplejs.js"></script>
+  <script type="text/javascript" type="text/javascript">
+
+    var ros = new ROSLIB.Ros({
+      url: 'ws://localhost:9090'
+    });
+
+    ros.on('connection', function () {
+      document.getElementById("status").innerHTML = "Connected";
+    });
+
+    ros.on('error', function (error) {
+      document.getElementById("status").innerHTML = "Error";
+    });
+
+    ros.on('close', function () {
+      document.getElementById("status").innerHTML = "Closed";
+    });
+
+    createJoystick = function () {
+      var options = {
+        zone: document.getElementById('left'),
+        threshold: 0.1,
+        position: { left: '50%', top: '50%' },
+        mode: 'static',
+        size: 150,
+      };
+      manager = nipplejs.create(options);
+
+      self.manager.on('start', function (event, nipple) {
+      });
+
+      self.manager.on('move', function (event, nipple) {
+        var max_distance = 75;
+        var x = -Math.cos(nipple.angle.radian) * nipple.distance / max_distance;
+        var y = Math.sin(nipple.angle.radian) * nipple.distance / max_distance;
+        axes = [x, y]
+        joy_event()
+      });
+
+      self.manager.on('end', function () {
+      });
+    }
+    window.onload = function () {
+      createJoystick();
+    }
+
+    joy_listener = new ROSLIB.Topic({
+      ros: ros,
+      name: "/joy",
+      messageType: 'sensor_msgs/Joy'
+    });
+
+    joy_event = function () {
+      var joy = new ROSLIB.Message({
+        axes: axes,
+        buttons: buttons
+      });
+      joy_listener.publish(joy);
+      console.log(axes)
+      console.log(buttons)
+    }
+
+    buttonY_clicked = function () {
+      buttons = [0, 0, 0, 1];
+      joy_event();
+    }
+    buttonX_clicked = function () {
+      buttons = [1, 0, 0, 0];
+      joy_event();
+    }
+    buttonB_clicked = function () {
+      buttons = [0, 0, 1, 0];
+      joy_event();
+    }
+    buttonA_clicked = function () {
+      buttons = [0, 1, 0, 0];
+      joy_event();
+    }
+
+    var axes = [0, 0];
+    var buttons = [0, 0, 0, 0];
+
+  </script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+
+<body>
+  <header>
+    <h1>ExoMy Control Interface</h1>
+    <p>Connection status: <span id="status"></span></p>
+  </header>
+  <main>
+    <div id="left"></div>
+    <div id="middle"></div>
+    <div id="right">
+      <div class="button_container">
+        <button class="button buttonY" onclick="buttonY_clicked()">Y</button>
+        <button class="button buttonX">X</button>
+        <button class="button buttonB">B</button>
+        <button class="button buttonA">A</button>
+      </div>
+    </div>
+  </main>
+
+
+</html>
