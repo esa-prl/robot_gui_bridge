@@ -46,6 +46,8 @@
       });
 
       self.manager.on('end', function () {
+        axes = [0, 0]
+        joy_event()
       });
     }
     window.onload = function () {
