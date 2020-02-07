@@ -8,13 +8,15 @@ header {
 body {
     overflow: scroll;
 }
-main{
-    position: absolute;
-    display: grid;
-    height: 100%;
-    width: 100%;
-}
 
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr; 
+    width: 100vw;
+    height: 100vh;
+}
 .button {
   border: none;
   color: white;
@@ -46,42 +48,39 @@ main{
 }
 
 .button_container {
-    display: grid;
     position: absolute;
-    width: 50%;
-    height: 50%;
-    top: 25%;
+    display: grid;
     left: 25%;
+    top: 25%;
+    height: 50%;
+    width: 50%;
+}
+.image_container {
+    position: absolute;
+    top: 25%;
+    height: 100%;
+    width: 100%;
+}
+.joy_container {
+    height: 100%;
+    width: 100%;
 }
 
-#left {
-    position: absolute;
-    left: 0;
-    top: 0;
-    flex: 33.3%;
-    height: 100%;
-    width: 33.3%;
+.left {
+    position: relative;
     background: rgba(189, 112, 50, 0.1);
     grid-column: 1;
-}
-#middle {
-    position: absolute;
-    left: 0;
-    top: 0;
-    flex: 33.3%;
     height: 100%;
-    width: 33.3%;
+}
+.middle {
+    position: relative;
     background: rgba(45, 48, 45, 0.1);
     grid-column: 2;
+    height: 100%;
 }
 
-#right {
-    position: absolute;
-    right: 0;
-    top: 0;
-    flex: 33.3%;
-    height: 100%;
-    width: 33.3%;
+.right {
+    position: relative;
     background: rgba(189, 112, 50, 0.1);
     grid-column: 3;
 }
