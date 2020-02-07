@@ -8,11 +8,11 @@
   <script src="./node_modules/nipplejs/dist/nipplejs.js"></script>
   <script type="text/javascript" type="text/javascript">
 
-    var url = window.location.hostname;
-    console.log(url);
-    
+    var host_url = window.location.hostname;
+    console.log(host_url);
+
     var ros = new ROSLIB.Ros({
-      url: 'ws://' +url+':9090' 
+      url: 'ws://' + host_url + ':9090'
     });
 
     ros.on('connection', function () {
@@ -93,6 +93,11 @@
     var axes = [0, 0];
     var buttons = [0, 0, 0, 0];
 
+    // Video output
+    stream_url = host_url + ':8000/stream?topic=/usb_cam/image_raw'
+    console.log(stream_url)
+    document.getElementById("video_output").src = stream_url
+
   </script>
   <link rel="stylesheet" type="text/css" href="style.css">
 
@@ -105,7 +110,9 @@
   </header>
   <main>
     <div id="left"></div>
-    <div id="middle"></div>
+    <div id="middle">
+      <img id="video_output" />
+    </div>
     <div id="right">
       <div class="button_container">
         <button class="button buttonY" onclick="buttonY_clicked()">Y</button>
